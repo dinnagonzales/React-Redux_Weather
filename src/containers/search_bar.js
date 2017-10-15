@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { fetchWeather } from '../actions/index';
 
 class SearchBar extends Component {
 	constructor(props){
 		super(props);
 
 		this.onInputChange = this.onInputChange.bind(this);
+		this.onFormSubmit = this.onFormSubmit.bind(this);
 		this.state = { term: '' };
 	}
 
@@ -15,9 +19,12 @@ class SearchBar extends Component {
 		});
 
 	}
-	
+
 	onFormSubmit(e){
 		e.preventDefault();
+
+		this.props.fetchWeather(this.state.term);
+		this.setState({ term: '' });
 	}
 
 	render() {
@@ -42,4 +49,28 @@ class SearchBar extends Component {
 	};
 };
 
-export default SearchBar;
+function mapDispatchToProps(dispatch){
+	//dispatcher -- makes sure payload is passed on to the middleware and
+	//reducer  
+	return bindActionCreators({ fetchWeather }, dispatch);
+}
+
+//state -> props
+//dispatch -> props -- USE null
+export default connect(null, mapDispatchToProps)(SearchBar);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
